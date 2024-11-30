@@ -1,0 +1,14 @@
+.wrapper {
+  width: 100vw;
+  height: 80px;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-weight: 700;
+}
+
+.text {
+  color: '#000';
+}

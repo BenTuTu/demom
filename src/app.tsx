@@ -1,18 +1,20 @@
 import { useEffect } from "react";
-import { useDidHide, useDidShow } from "@tarojs/taro";
-import { Provider } from "mobx-react";
+import { useDidHide, useDidShow, getSystemInfo } from "@tarojs/taro";
+import { MobXProviderContext } from "mobx-react";
 
-import counterStore from "./store/counter";
+import { store } from "./store";
 
 import "./app.scss";
 
-const store = {
-  counterStore,
-};
-
 function App(props) {
   // 可以使用所有的 React Hooks
-  useEffect(() => {});
+  useEffect(() => {
+    getSystemInfo({
+      success: (res) => {
+        store.counterStore.setStatusBarHeight(res.statusBarHeight || 0);
+      },
+    });
+  }, []);
 
   // 对应 onShow
   useDidShow(() => {});
@@ -20,8 +22,11 @@ function App(props) {
   // 对应 onHide
   useDidHide(() => {});
 
-  // this.props.children 就是要渲染的页面
-  return <Provider store={store}>{props.children}</Provider>;
+  return (
+    <MobXProviderContext.Provider value={store}>
+      {props.children}
+    </MobXProviderContext.Provider>
+  );
 }
 
 export default App;

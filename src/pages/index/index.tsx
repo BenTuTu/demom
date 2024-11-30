@@ -1,79 +1,37 @@
-import { Component, PropsWithChildren } from "react";
-import { View, Button, Text } from "@tarojs/components";
-import { observer, inject } from "mobx-react";
-import { AtTabBar } from "taro-ui";
-import Taro from "@tarojs/taro";
+import { View, Swiper, SwiperItem, Image } from "@tarojs/components";
+import { observer } from "mobx-react";
+import Header from "src/components/header";
 
-import "./index.scss";
+import styles from "./index.module.scss";
 
-type PageStateProps = {
-  store: {
-    counterStore: {
-      counter: number;
-      curTab: number;
-      increment: Function;
-      decrement: Function;
-      incrementAsync: Function;
-      changeTab(tab: number): void;
-    };
-  };
-};
+const IMG_LIST = [
+  "https://file.moyublog.com/free_wallpapers_files/or1u0vej1pi.jpg",
+  "https://img3.huamaocdn.com/upload/bizhi/images/1000w680h/2020/07/202106111334376577.jpg",
+  "https://file.moyublog.com/free_wallpapers_files/4dkkznup3kj.jpg",
+];
 
-@inject("store")
-@observer
-class Index extends Component<PropsWithChildren<PageStateProps>> {
-  componentDidMount() {}
+function Index(props) {
+  return (
+    <View className={styles.container}>
+      <Header title="首页" />
 
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
-
-  increment = () => {
-    const { counterStore } = this.props.store;
-    counterStore.increment();
-  };
-
-  decrement = () => {
-    const { counterStore } = this.props.store;
-    counterStore.decrement();
-  };
-
-  incrementAsync = () => {
-    const { counterStore } = this.props.store;
-    counterStore.incrementAsync();
-  };
-
-  onTabClick = (index: number) => {
-    this.props.store.counterStore.changeTab(index);
-    // Taro.navigateTo({
-    //   url: 'mine?a=333'
-    // })
-  };
-
-  render() {
-    const {
-      counterStore: { counter, curTab },
-    } = this.props.store;
-    return (
-      <View className="index">
-        <Button onClick={this.increment}>+</Button>
-        <Button onClick={this.decrement}>-</Button>
-        <Button onClick={this.incrementAsync}>Add Async</Button>
-        <Text>{counter}</Text>
-        <AtTabBar
-          fixed
-          tabList={[
-            { title: "首页", iconType: "filter" },
-            { title: "我的", iconType: "user" },
-          ]}
-          onClick={this.onTabClick}
-          current={curTab}
-        />
-      </View>
-    );
-  }
+      <Swiper
+        className={styles.swipperWrapper}
+        // indicatorColor="#999"
+        // indicatorActiveColor="#333"
+        indicatorDots={false}
+        vertical={false}
+        circular
+        autoplay
+      >
+        {IMG_LIST.map((img, idx) => (
+          <SwiperItem key={idx} className={styles.swipperItem}>
+            <Image className={styles.img} src={img} />
+          </SwiperItem>
+        ))}
+      </Swiper>
+    </View>
+  );
 }
 
-export default Index;
+export default observer(Index);

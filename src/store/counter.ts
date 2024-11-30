@@ -3,6 +3,7 @@ import { observable } from 'mobx'
 const counterStore = observable({
   counter: 0,
   curTab: 0,
+  statusBarHeight: 0,
   counterStore() {
     this.counter++
   },
@@ -19,6 +20,9 @@ const counterStore = observable({
   },
   changeTab(index: number) {
     this.curTab = index;
+  },
+  setStatusBarHeight(h: number) {
+    this.statusBarHeight = h;
   }
 })
 
